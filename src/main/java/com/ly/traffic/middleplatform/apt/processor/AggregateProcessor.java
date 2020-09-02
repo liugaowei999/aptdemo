@@ -1,7 +1,6 @@
 package com.ly.traffic.middleplatform.apt.processor;
 
 import com.google.auto.service.AutoService;
-import com.ly.traffic.middleplatform.apt.ProcessingException;
 import com.ly.traffic.middleplatform.apt.annotation.Aggregate;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -57,9 +56,8 @@ public class AggregateProcessor extends AbstractProcessor {
         for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(Aggregate.class)) {
             if (annotatedElement.getKind() != ElementKind.CLASS) {
                 // 被注解的不是一个类，抛出异常
-                String msg = "[" + annotatedElement.getSimpleName() + "]: 不是一个类! 类上才能使用该注解:["
-                        + Aggregate.class.getCanonicalName() + "]";
-                messager.printMessage(Diagnostic.Kind.ERROR, msg);
+                error(annotatedElement, "不是一个类! 类上才能使用该注解:[@%s]", Aggregate.class.getCanonicalName());
+                return true;
             }
             // 将annotatedElement中包含的信息封装成一个对象，方便后续使用
             TypeElement currentClass = (TypeElement) annotatedElement;
@@ -78,10 +76,9 @@ public class AggregateProcessor extends AbstractProcessor {
                 if (superclass.getQualifiedName().toString().equals("com.ly.traffic.middleplatform.domain.createorder.entity.UnionOrderEntity")) {
                     currentClassFiledNameSet.retainAll(superClassFiledNameSet);
                     if (CollectionUtils.isNotEmpty(currentClassFiledNameSet)) {
-                        String msg = currentClass.getQualifiedName() + ".java ：the field [" + currentClassFiledNameSet.get(0)
-                                + "] is already defined in his super class :["
-                                + superclass.getQualifiedName() + "]";
-                        messager.printMessage(Diagnostic.Kind.ERROR, msg);
+                        error(currentClass, "the field [%s] is already defined in his super class :[%s]",
+                                currentClassFiledNameSet.get(0), superclass.getQualifiedName());
+                        return true;
                     }
                 }
             }
@@ -101,17 +98,10 @@ public class AggregateProcessor extends AbstractProcessor {
         return filedNameSet;
     }
 
-    private String getPrintMsg(TypeElement typeElement) {
-        String msg = "";
-
-        List<? extends Element> enclosedElements = typeElement.getEnclosedElements();
-        for (Element element : enclosedElements) {
-            if (element instanceof VariableElement) {
-                VariableElement variableElement = (VariableElement)element;
-                msg += "\nfieldName:" + variableElement.getSimpleName()
-                        + "； fieldValue:" + variableElement.getConstantValue();
-            }
-        }
-        return msg;
+    private void error(Element e, String msg, Object... args) {
+        messager.printMessage(
+                Diagnostic.Kind.ERROR,
+                String.format(msg, args),
+                e);
     }
 }

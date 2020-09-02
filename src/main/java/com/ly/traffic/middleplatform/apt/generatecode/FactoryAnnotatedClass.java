@@ -1,4 +1,4 @@
-package com.ly.traffic.middleplatform.apt;
+package com.ly.traffic.middleplatform.apt.generatecode;
 
 
 

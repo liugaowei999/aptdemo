@@ -39,7 +39,15 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
     </dependency>
-  </dependencies>
+
+    <!-- https://mvnrepository.com/artifact/com.squareup/javapoet -->
+    <dependency>
+        <groupId>com.squareup</groupId>
+        <artifactId>javapoet</artifactId>
+        <version>1.13.0</version>
+    </dependency>
+
+    </dependencies>
 
   <!--<build>
     <plugins>
