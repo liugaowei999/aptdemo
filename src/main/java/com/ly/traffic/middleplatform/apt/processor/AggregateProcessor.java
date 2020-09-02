@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * @author liugw
  * @Package com.ly.traffic.middleplatform.utils.apt.processor
- * @Description: ${TODO}
+ * @Description: 编译期Aggregate注解处理器
  * @date 2020/9/2 8:51
  */
 @AutoService(Processor.class)
@@ -57,8 +57,9 @@ public class AggregateProcessor extends AbstractProcessor {
         for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(Aggregate.class)) {
             if (annotatedElement.getKind() != ElementKind.CLASS) {
                 // 被注解的不是一个类，抛出异常
-                throw new ProcessingException(annotatedElement, "类上才能使用该注解: @%s",
-                        Aggregate.class.getSimpleName());
+                String msg = "[" + annotatedElement.getSimpleName() + "]: 不是一个类! 类上才能使用该注解:["
+                        + Aggregate.class.getCanonicalName() + "]";
+                messager.printMessage(Diagnostic.Kind.ERROR, msg);
             }
             // 将annotatedElement中包含的信息封装成一个对象，方便后续使用
             TypeElement currentClass = (TypeElement) annotatedElement;
@@ -68,6 +69,7 @@ public class AggregateProcessor extends AbstractProcessor {
                 // 如果设置强制重新父类字段，则跳过检查
                 continue;
             }
+
             TypeMirror superClassType = currentClass.getSuperclass();
             if (superClassType.getKind() != TypeKind.NONE) {
                 TypeElement superclass = (TypeElement)typeUtils.asElement(superClassType);
@@ -76,20 +78,13 @@ public class AggregateProcessor extends AbstractProcessor {
                 if (superclass.getQualifiedName().toString().equals("com.ly.traffic.middleplatform.domain.createorder.entity.UnionOrderEntity")) {
                     currentClassFiledNameSet.retainAll(superClassFiledNameSet);
                     if (CollectionUtils.isNotEmpty(currentClassFiledNameSet)) {
-                        String msg = currentClass.getQualifiedName() + ".java ：the filed [" + currentClassFiledNameSet.get(0)
+                        String msg = currentClass.getQualifiedName() + ".java ：the field [" + currentClassFiledNameSet.get(0)
                                 + "] is already defined in his super class :["
                                 + superclass.getQualifiedName() + "]";
                         messager.printMessage(Diagnostic.Kind.ERROR, msg);
-//                        elementUtils.getBinaryName()
-//                        throw new ProcessingException(annotatedElement, "聚合根子类字段已经在父类定义！ @%s",
-//                                currentClassFiledNameSet.get(0), currentClass.getQualifiedName());
                     }
                 }
             }
-
-
-            // typeElement.getSuperclass();
-            // .............
         }
         return true;
     }
