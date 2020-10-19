@@ -1,3 +1,4 @@
+/*
 package com.ly.traffic.middleplatform.apt.processor;
 
 import com.google.auto.service.AutoService;
@@ -5,6 +6,7 @@ import com.ly.traffic.middleplatform.apt.generatecode.FactoryAnnotatedClass;
 import com.ly.traffic.middleplatform.apt.generatecode.FactoryGroupedClasses;
 import com.ly.traffic.middleplatform.apt.exception.ProcessingException;
 import com.ly.traffic.middleplatform.apt.annotation.Factory;
+import com.sun.tools.javac.api.JavacTrees;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -20,12 +22,14 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+*/
 /**
  * @author liugw
  * @Package com.ly.traffic.middleplatform.infrastructure.apt
  * @Description: ${TODO}
  * @date 2020/9/1 14:05
- */
+ *//*
+
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.ly.traffic.middleplatform.apt.annotation.Factory"})
 //@SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -43,21 +47,25 @@ public class TestProcessor extends AbstractProcessor {
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
-        /**初始化处理器
+        */
+/**初始化处理器
          * ProcessingEnvironment是一个注解处理工具的集合。它包含了众多工具类。
          * 例如：
          * Filer可以用来编写新文件；
          * Messager可以用来打印错误信息；
          * Elements是一个可以处理Element的工具类。
-         **/
+         **//*
+
         super.init(processingEnv);
         mTypeUtils = processingEnv.getTypeUtils();
         messager = processingEnv.getMessager();
         mFiler = processingEnv.getFiler();
         mElementUtils = processingEnv.getElementUtils();
+        JavacTrees javacTrees = JavacTrees.instance(processingEnv);
     }
 
-    /**
+    */
+/**
      * 返回值表示注解是否由当前Processor 处理
      * 如果返回 true，则这些注解由此注解来处理，后续其它的 Processor 无需再处理它们；
      * 如果返回 false，则这些注解未在此Processor中处理并，那么后续 Processor 可以继续处理它们。
@@ -66,7 +74,8 @@ public class TestProcessor extends AbstractProcessor {
      * @param annotations 1
      * @param roundEnv 1
      * @return true or false 表示注解是否由当前Processor 处理
-     */
+     *//*
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv){
         messager.printMessage(Diagnostic.Kind.NOTE, "开始生成工厂类 ===========");
@@ -111,11 +120,13 @@ public class TestProcessor extends AbstractProcessor {
         return true;
     }
 
-    /**
+    */
+/**
      * 校验
      * @param item 1
      * @throws ProcessingException 1
-     */
+     *//*
+
     private void checkValidClass(FactoryAnnotatedClass item) throws ProcessingException {
         TypeElement classElement = item.getTypeElement();
 
@@ -177,3 +188,4 @@ public class TestProcessor extends AbstractProcessor {
                 classElement.getQualifiedName().toString());
     }
 }
+*/

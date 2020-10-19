@@ -46,6 +46,13 @@
         <artifactId>javapoet</artifactId>
         <version>1.13.0</version>
     </dependency>
+    <!--<dependency>
+        <groupId>com.sun</groupId>
+        <artifactId>tools</artifactId>
+        <version>1.8</version>
+        <scope>system</scope>
+        <systemPath>${java.home}/../lib/tools.jar</systemPath>
+    </dependency>-->
 
     </dependencies>
 
@@ -196,6 +203,15 @@
                             <scope>runtime</scope>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <compilerArgument>-proc:none</compilerArgument>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

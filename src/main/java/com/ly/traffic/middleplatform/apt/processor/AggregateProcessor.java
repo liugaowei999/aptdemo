@@ -76,7 +76,7 @@ public class AggregateProcessor extends AbstractProcessor {
                 if (superclass.getQualifiedName().toString().equals("com.ly.traffic.middleplatform.domain.createorder.entity.UnionOrderEntity")) {
                     currentClassFiledNameSet.retainAll(superClassFiledNameSet);
                     if (CollectionUtils.isNotEmpty(currentClassFiledNameSet)) {
-                        error(currentClass, "the field [%s] is already defined in his super class :[%s]",
+                        error(currentClass, "相同名称的字段在子类被重复定义! \nthe field [%s] is already defined in his super class :[%s]",
                                 currentClassFiledNameSet.get(0), superclass.getQualifiedName());
                         return true;
                     }
